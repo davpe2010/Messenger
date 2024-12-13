@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search user</title>
+    </head>
+    <body>
+        <h1>Search user</h1>
+        <form action="{{ url_for('search')}} " method="post"> 
+            <label for="user">Username:  </label>
+            <input type="text" id="user" name="user"><br><br>
+            <input type="submit" value="Search">
+        </form>
+    </body>
+</html>

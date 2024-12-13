@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messenger</title>
+        <style>
+            pre {
+                white-space: pre-wrap;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>{{ USER }}</h1>
+        <pre><div class="text">{{ DATA }}</div><br><br></pre>
+        <form action="get_message" method="post"> 
+            <label for="message">Message:  </label>
+            <input type="text" id="message" name="message"><br><br>
+            <input type="submit" value="Send">
+        </form>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+[project]
+name = "Messenger"
+version = "0.0.1"
+authors = [
+    { name="Davydov Peter", email="davpe2010@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
