@@ -3,8 +3,7 @@ from flask import Flask, request, render_template, url_for, redirect
 
 app = Flask(__name__)
 
-userto = None
-userfrom = None
+usertf = {}
 
 with open("src/users.json", encoding="UTF-8") as file_in1:
     users = json.load(file_in1)
@@ -20,35 +19,34 @@ def index():
 def login():
     global userfrom
     if request.method == "POST" and users[request.form["username"]] == request.form["password"]:
-        userfrom = request.form["username"]
-        print("newuser")
-        return redirect(url_for("messenger"))
+        usertf[request.form["username"]] = None
+        return redirect(url_for("messenger", user=request.form["username"]))
     else:
         return redirect(url_for("index"))
 
-@app.route("/messenger", methods=["GET", "POST"])
-def messenger():
-    if userto == None:
-        return render_template("search.html")
+@app.route("/messenger/<user>", methods=["GET", "POST"])
+def messenger(user):
+    if usertf[user] == None:
+        return render_template("search.html", userr=user)
     else:
-        return render_template("messenger.html", USER=userto, DATA=datas[userfrom][userto])
+        return render_template("messenger.html", USER=usertf[user], DATA=datas[user][usertf[user]], userr=user)
 
-@app.route("/search", methods=["GET", "POST"])
-def search():
+@app.route("/search/<userr>", methods=["GET", "POST"])
+def search(userr):
     global userto
     if request.method == "POST" and request.form["user"] in users:
-        userto = request.form["user"]
-    return redirect(url_for("messenger"))
+        usertf[userr] = request.form["user"]
+    return redirect(url_for("messenger", user=userr))
 
-@app.route("/get_message", methods=["GET", "POST"])
-def get_message():
+@app.route("/get_message/<userr>", methods=["GET", "POST"])
+def get_message(userr):
     if request.method == "POST":
-        datas[userfrom][userto] = datas[userfrom][userto] + "\n" + userfrom + ":  " + request.form["message"]
-        datas[userto][userfrom] = datas[userto][userfrom] + "\n" + userfrom + ":  " + request.form["message"]
+        datas[userr][usertf[userr]] = datas[userr][usertf[userr]] + "\n" + userr + ":  " + request.form["message"]
+        datas[usertf[userr]][userr] = datas[usertf[userr]][userr] + "\n" + userr + ":  " + request.form["message"]
         with open("src/message.json", "w", encoding="UTF-8") as file_out:
             json.dump(datas, file_out, ensure_ascii=False, indent=2)
-    return redirect(url_for("messenger"))
+    return redirect(url_for("messenger", user=userr))
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="192.168.0.127")

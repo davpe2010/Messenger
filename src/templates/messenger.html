@@ -11,7 +11,7 @@
     <body>
         <h1>{{ USER }}</h1>
         <pre><div class="text">{{ DATA }}</div><br><br></pre>
-        <form action="get_message" method="post"> 
+        <form action="{{ url_for('get_message', userr=userr) }}" method="post"> 
             <label for="message">Message:  </label>
             <input type="text" id="message" name="message"><br><br>
             <input type="submit" value="Send">
